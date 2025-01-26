@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { searchQuestions } from './services/QuestionServiceClient';
-import QuestionList from './QuestionList'; // Import the QuestionList component
+import QuestionList from './QuestionList';
 import './App.css';
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [selectedTypes, setSelectedTypes] = useState([]); // State for selected question types
+  const [selectedTypes, setSelectedTypes] = useState([]);
 
   const questionTypes = ['MCQ', 'READ_ALONG', 'CONTENT_ONLY', 'ANAGRAM'];
 
@@ -23,13 +23,13 @@ const App = () => {
     if (!query.trim()) return;
     setLoading(true);
     try {
-      const response = await searchQuestions(query, currentPage); // Pass currentPage to the search function
+      const response = await searchQuestions(query, currentPage);
       const filteredResults = response.questions.filter(question =>
         selectedTypes.length === 0 || selectedTypes.includes(question.type)
       );
       setResults(filteredResults);
       setTotalPages(response.totalPages);
-      setCurrentPage(1); // Reset to the first page after a new search
+      setCurrentPage(1);
     } catch (error) {
       console.error('Error fetching questions:', error);
     } finally {
@@ -42,27 +42,27 @@ const App = () => {
     setResults([]);
     setTotalPages(0);
     setCurrentPage(1);
-    setSelectedTypes([]); // Clear selected types
+    setSelectedTypes([]);
   };
 
   const handleNextPage = async () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
-      await fetchQuestions(currentPage + 1); // Fetch next page questions
+      await fetchQuestions(currentPage + 1);
     }
   };
 
   const handlePreviousPage = async () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      await fetchQuestions(currentPage - 1); // Fetch previous page questions
+      await fetchQuestions(currentPage - 1);
     }
   };
 
   const fetchQuestions = async (page) => {
     setLoading(true);
     try {
-      const response = await searchQuestions(query, page); // Fetch questions for the specified page
+      const response = await searchQuestions(query, page);
       const filteredResults = response.questions.filter(question =>
         selectedTypes.length === 0 || selectedTypes.includes(question.type)
       );
@@ -77,9 +77,9 @@ const App = () => {
 
   useEffect(() => {
     if (query) {
-      fetchQuestions(currentPage); // Fetch questions when the page or query changes
+      fetchQuestions(currentPage);
     }
-  }, [currentPage, query, selectedTypes]); // Add selectedTypes to the dependency array
+  }, [currentPage, query, selectedTypes]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">

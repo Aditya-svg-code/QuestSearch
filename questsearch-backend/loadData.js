@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
-const { ObjectId } = require('mongoose').Types; // Import ObjectId
+const { ObjectId } = require('mongoose').Types;
 
 mongoose.connect('mongodb://localhost:27017/questsearch', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -29,7 +29,7 @@ fs.readFile('data/questions.json', 'utf8', async (err, data) => {
 
     const questions = JSON.parse(data).map(question => {
         if (question._id) {
-            question._id = new ObjectId(question._id.$oid); // Convert to ObjectId
+            question._id = new ObjectId(question._id.$oid);
         }
         return question;
     });
